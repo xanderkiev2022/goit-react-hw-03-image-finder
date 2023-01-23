@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const LS_KEY = 'savedPictures';
+
+// const LS_KEY = 'savedPictures';
 
 
 export class App extends Component {
@@ -13,25 +14,20 @@ export class App extends Component {
       largeImage: null,
       totalhits: 0,
       };
-    };
 
+      // componentDidMount() {
+  //   const localData = localStorage.getItem(LS_KEY);
+  //   if (localData) {
+  //     this.setState({ contacts: JSON.parse(localData) });
+  //   }
+  //   else this.setState({ contacts: [] }); //перезатираємо localStorage
+  // }
 
-
-
-
-  componentDidMount() {
-    const localData = localStorage.getItem(LS_KEY);
-    if (localData) {
-      this.setState({ contacts: JSON.parse(localData) });
-    }
-    else this.setState({ contacts: [] }); //перезатираємо localStorage
-  }
-
-  componentDidUpdate(_, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
-    }
-  }
+  // componentDidUpdate(_, prevState) {
+  //   if (prevState.contacts !== this.state.contacts) {
+  //     localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
+  //   }
+  // }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -66,22 +62,22 @@ export class App extends Component {
 
 
 
-let loading = false;
-let numberOfPics = 0;
+// let loading = false;
+// let numberOfPics = 0;
 
-searchForm.addEventListener('submit', onSearch);
-window.addEventListener('scroll', infinitiScroll);
+// searchForm.addEventListener('submit', onSearch);
+// window.addEventListener('scroll', infinitiScroll);
 
-function onSearch(e) {
-  e.preventDefault();
-  picApiService.query = e.target.elements.searchQuery.value;
+// function onSearch(e) {
+//   e.preventDefault();
+//   picApiService.query = e.target.elements.searchQuery.value;
 
 
 
-  // picApiService.resetPage();
-  clearPicsContainer();
-  fetchPics();
-}
+//   // picApiService.resetPage();
+//   clearPicsContainer();
+//   fetchPics();
+// }
 
 // async function fetchPics() {
 //   // console.log (fetchPics)
