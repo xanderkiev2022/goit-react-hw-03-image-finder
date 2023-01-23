@@ -1,44 +1,62 @@
+import { Component } from 'react';
+import { toast } from 'react-toastify';
 // import PropTypes from 'prop-types';
+import { imagesAPI } from 'components/Services/Services';
+import { Gallery } from 'components/Gallery/Gallery';
 // import { List, Item } from './ContactList.styled';
 
+export class ImageGallery extends Component {
+  state = {
+    imagesList: null,
+    status: 'idle',
+    error: null,
+  };
 
-// export default function createPicsMarkup(hits) {
-//     return hits.reduce(
-//       (acc, { webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
-//         acc +
-//         `
-//         <div class="photo-card">
-//         <div class="wrapper">
-//     <img src="${webformatURL}" alt="${tags}" loading="lazy" /></div>
-//     <div class="info">
-//       <p class="info-item">
-//         <b>Likes: </b> ${likes}
-//       </p>
-//       <p class="info-item">
-//         <b>Views: </b> ${views}
-//       </p>
-//       <p class="info-item">
-//         <b>Comments: </b> ${comments}
-//       </p>
-//       <p class="info-item">
-//         <b>Downloads: </b> ${downloads}
-//       </p>
-//     </div>
-//   </div>`,
-//       ''
-//     );
-//   }
+  async componentDidUpdate(prevProps) {
+    const currentSearchQuery = this.props.searchQuery;
+    const prevSearchQuery = prevProps.searchQuery;
+    const currentPage = this.props.page;
+    const prevPage = prevProps.page;
 
+    if (currentSearchQuery === '') {
+      this.setState({ status: 'idle' });
+    }
+    if (prevSearchQuery !== currentSearchQuery || prevPage !== currentPage) {
+      this.setState({ status: 'pending' });
 
+      try {
+        const data = await imagesAPI(currentSearchQuery, prevPage);
+        if (data.hits.length === 0) {
+          return this.setState({ status: 'no-results' });
+        }
+        this.setState({ imagesList: data, status: 'resolved' });
+        toast.success(`Hooray! We found ${data.totalHits} images.`);
+      } catch (error) {
+        this.setState({ error, status: 'rejected' });
+      }
+    }
+  }
 
-// ContactList.propeTypes = {
-//     contacts: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         id: PropTypes.string.isRequired,
-//         name: PropTypes.string.isRequired,
-//         number: PropTypes.string.isRequired,
-//       })
-//     ),
-//     deleteContact: PropTypes.func.isRequired,
-//   };
-  
+  render() {
+    const { imagesList, status } = this.state;
+    if (status === 'idle') {
+        return toast.default(`Please, enter something to start searching`);
+    }
+    if (status === 'pending') {
+      return <div>Loading...</div>;
+    }
+    if (status === 'no-results') {
+      return toast.warn(`Sorry, there are no images matching your search query`);
+    }
+    if (status === 'rejected') {
+      return toast.error('Please, try again later');
+    }
+    if (status === 'resolved') {
+      return (<div>{imagesList && <Gallery>{this.props.children}</Gallery>}</div>);
+    }
+  }
+}
+
+// ImageGallery.propTypes = {
+
+// };

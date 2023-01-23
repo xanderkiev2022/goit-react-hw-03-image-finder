@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-// import PicApiServiceClass from './js/PicApiService';
+import axios from 'axios';
 
 const LS_KEY = 'savedPictures';
 
+
 export class App extends Component {
-  state = {
-    picture: '',
-  };
+    state = {
+      page: 1,
+      searchQuery: '',
+      items: [],
+      showModal: false,
+      largeImage: null,
+      totalhits: 0,
+      };
+    };
+
+
+
+
 
   componentDidMount() {
     const localData = localStorage.getItem(LS_KEY);
@@ -22,14 +33,14 @@ export class App extends Component {
     }
   }
 
-  // handleSubmit = stateOfContactForm => {
-  //   const { contacts } = this.state;
+  handleSubmit = e => {
+    e.preventDefault();
+    e.targer.reset();
 
-  //   stateOfContactForm.id = nanoid();
-  //   this.setState(prevState => ({
-  //     contacts: [stateOfContactForm, ...prevState.contacts],
-  //   }));
-  // };
+    // this.setState(prevState => ({
+    //   contacts: [stateOfContactForm, ...prevState.contacts],
+    // }));
+  };
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
@@ -40,7 +51,7 @@ export class App extends Component {
     return (
       <>
         <Searchbar />
-        <ImageGallery />
+        <ImageGallery searchQuery={this.state.searchQuery} page={this.stae.page}  />
         <ImageGalleryItem /> 
         <Loader /> 
         <Button />
@@ -54,9 +65,7 @@ export class App extends Component {
 
 
 
-const searchForm = document.querySelector('.search-form');
-const gallery = document.querySelector('.gallery');
-const picApiService = new PicApiServiceClass("", 1, 40);
+
 let loading = false;
 let numberOfPics = 0;
 
@@ -67,9 +76,7 @@ function onSearch(e) {
   e.preventDefault();
   picApiService.query = e.target.elements.searchQuery.value;
 
-  if (picApiService.query === '') {
-    Notiflix.Notify.failure('Please, enter something to start searching');
-  }
+
 
   // picApiService.resetPage();
   clearPicsContainer();
