@@ -1,5 +1,6 @@
 import { Component } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import { Header, Form, SearchButton, ButtonLabel, Input} from './Searchbar.styles'; 
 
@@ -17,11 +18,12 @@ export class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { searchQuery } = this.state;
-    if (searchQuery.trim() === '') {
-        alert('Please start typing the searching query');
+    // if (searchQuery.trim() === '') {
+    if (!searchQuery.trim()) {
+        // alert('Please start typing the searching query');
 
 
-        // toast('test');
+        toast.error('Please start typing the searching query');
 
         
         // toast.warn('Please start typing the searching query');

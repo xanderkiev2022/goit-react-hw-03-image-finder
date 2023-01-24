@@ -3,7 +3,7 @@ import { Button, Div } from './Button.styled';
 
 export const ButtonLoadMore = ({ loadMore }) => {
   const handleLoadMore = () => {
-    loadMore();
+    loadMore()
   };
 
   return (

@@ -33,6 +33,6 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  onToggle: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
   largeImg: PropTypes.string.isRequired,
 };

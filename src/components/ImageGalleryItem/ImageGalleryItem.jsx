@@ -6,6 +6,7 @@ export class ImageGalleryItem extends Component {
     hadleClick = () => {
         this.props.getLargeImage(this.props.largeImgUrl);
         this.props.toggleModal();
+        console.log(this.props.largeImgUrl)
     }
 
   render() {

@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 // import PropTypes from 'prop-types';
 import { imagesAPI } from 'components/Services/Services';
 import { Gallery } from './imageGallery.styled'; 
@@ -8,7 +8,7 @@ import { Gallery } from './imageGallery.styled';
 export class ImageGallery extends Component {
   state = {
     imagesList: null,
-    status: 'idle',
+    // status: 'idle',
     error: null,
   };
 
@@ -18,31 +18,21 @@ export class ImageGallery extends Component {
     const prevSearchQuery = prevProps.searchQuery;
     const prevPage = prevProps.page;
 
-    // if (currentSearchQuery.trim() === '') {
-    //   alert('Please, enter something to start searching');
-  
-    //   this.setState({ status: 'idle' });
-    // }
     if (prevSearchQuery !== currentSearchQuery || prevPage !== currentPage) {
-      // this.props.this.props.changeLoadingStatus('pending');
-      // this.setState({ status: 'pending' });
       this.props.changeLoadingStatus(true);
 
       try {
         const data = await imagesAPI(currentSearchQuery, prevPage);
         if (data.hits.length === 0) {
-          toast.info('test');
-            alert(`Sorry, there are no images matching your search query`)
-          // toast.warn(`Sorry, there are no images matching your search query`);
-          // return this.setState({ status: 'no-results' });
+          toast.error(`Sorry, there are no images matching your search query`)
         }
-        this.setState({ imagesList: data, status: 'resolved' });
-        // this.props.changeLoadingStatus(false);
+        this.setState({ imagesList: data});
         this.props.getImageList(data.hits);
         this.props.getTotalHits(data.totalHits);
-        toast.success(`Hooray! We found ${data.totalHits} images.`);
+        // toast.success(`Hooray! We found ${data.totalHits} images.`);
       } catch (error) {
-        this.setState({ error, status: 'rejected' });
+        this.setState({ error})
+        return toast.error(`Something went wrong. ${this.state.error}. Please, try again later`);;
       } finally {
         this.props.changeLoadingStatus(false);
     }
@@ -50,7 +40,7 @@ export class ImageGallery extends Component {
 }
 
   render() {
-    const { imagesList, status } = this.state;
+    const { imagesList} = this.state;
     // if (status === 'idle') {
     //     return toast.warn(`Please, enter something to start searching`);
     // }
@@ -60,12 +50,12 @@ export class ImageGallery extends Component {
     // if (status === 'no-results') {
     //   return toast.warn(`Sorry, there are no images matching your search query`);
     // }
-    if (status === 'rejected') {
-      return toast.error(`Something went wrong. ${status.error}. Please, try again later`);
-    }
-    if (status === 'resolved') {
+    // if (status === 'rejected') {
+    //   return toast.error(`Something went wrong. ${status.error}. Please, try again later`);
+    // }
+    // if (status === 'resolved') {
       return (<div>{imagesList && <Gallery>{this.props.children}</Gallery>}</div>);
-    }
+    // }
   }
 }
 
