@@ -20,11 +20,11 @@ export class Modal extends Component {
   }
 
   render() {
-    const { largeImg } = this.props;
+    const { largeImage } = this.props;
     return createPortal(
       <Overlay onClick={this.handleClose}>
         <Modalwindow>
-          <img src={largeImg} alt="" />
+          <img src={largeImage} alt="" />
         </Modalwindow>
       </Overlay>,
       modalRoot
@@ -34,5 +34,5 @@ export class Modal extends Component {
 
 Modal.propTypes = {
   toggleModal: PropTypes.func.isRequired,
-  largeImg: PropTypes.string.isRequired,
+  largeImage: PropTypes.string.isRequired,
 };

@@ -1,8 +1,13 @@
 import { Component } from 'react';
-// import { toast } from 'react-toastify';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
-import { Header, Form, SearchButton, ButtonLabel, Input} from './Searchbar.styles'; 
+import {
+  Header,
+  Form,
+  SearchButton,
+  ButtonLabel,
+  Input,
+} from './Searchbar.styles';
 
 export class Searchbar extends Component {
   state = {
@@ -12,29 +17,23 @@ export class Searchbar extends Component {
   handleChange = e => {
     const { name, value } = e.target;
     const normalizeValue = value.toLowerCase();
-    this.setState({[name]: normalizeValue });
+    this.setState({ [name]: normalizeValue });
   };
 
   handleSubmit = e => {
     e.preventDefault();
     const { searchQuery } = this.state;
-    // if (searchQuery.trim() === '') {
     if (!searchQuery.trim()) {
-        // alert('Please start typing the searching query');
-
-
-        toast.error('Please start typing the searching query');
-
-        
-        // toast.warn('Please start typing the searching query');
-        return;}
+      toast.error('Please start typing the searching query');
+      return;
+    }
     this.props.onSubmit(searchQuery);
     this.reset();
   };
 
-reset = () => {
-  this.setState({ searchQuery: '' });
-};
+  reset = () => {
+    this.setState({ searchQuery: '' });
+  };
 
   render() {
     const { searchQuery } = this.state;

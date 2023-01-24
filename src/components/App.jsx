@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { ToastContainer } from 'react-toastify';
 import { Toaster } from 'react-hot-toast';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -8,8 +7,6 @@ import { Modal } from './Modal/Modal';
 import { ButtonLoadMore } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import { Container } from './App.styled';
-
-// const LS_KEY = 'savedPictures';
 
 export class App extends Component {
   state = {
@@ -61,7 +58,15 @@ export class App extends Component {
   };
 
   render() {
-    const { searchQuery, page, showModal, imageList, largeImage, totalhits, isLoading } = this.state;
+    const {
+      searchQuery,
+      page,
+      showModal,
+      imageList,
+      largeImage,
+      totalhits,
+      isLoading,
+    } = this.state;
     return (
       <Container>
         <Toaster position="top-right" reverseOrder={false} />
@@ -69,15 +74,17 @@ export class App extends Component {
         <ImageGallery
           searchQuery={searchQuery}
           page={page}
+          imageList={imageList}
           getImageList={this.getImageList}
           getTotalHits={this.getTotalHits}
           changeLoadingStatus={this.changeLoadingStatus}
         >
           {imageList?.map(image => (
-            <ImageGalleryItem              
+            <ImageGalleryItem
               key={image.webformatURL}
               imageUrl={image.webformatURL}
               largeImgUrl={image.largeImageURL}
+              tags={image.tags}
               toggleModal={this.toggleModal}
               getLargeImage={this.getLargeImage}
             ></ImageGalleryItem>

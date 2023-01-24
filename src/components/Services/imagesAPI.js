@@ -7,7 +7,6 @@ const API_KEY = '32292890-abfc4b14e22aeb7e2001180a2';
 export const imagesAPI = async (searchQuery, page) => {
   try {
     const { data } = await axios.get(BASE_URL, {
-       // headers: {
       params: {
         key: API_KEY,
         q: searchQuery,

@@ -1,14 +1,11 @@
-import { Component } from 'react';
 import toast from 'react-hot-toast';
-// import PropTypes from 'prop-types';
-import { imagesAPI } from 'components/Services/Services';
-import { Gallery } from './imageGallery.styled'; 
-// import { List, Item } from './ContactList.styled';
+import PropTypes from 'prop-types';
+import { Component } from 'react';
+import { imagesAPI } from 'components/Services/imagesAPI';
+import { Gallery } from './imageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
-    imagesList: null,
-    // status: 'idle',
     error: null,
   };
 
@@ -22,55 +19,39 @@ export class ImageGallery extends Component {
       this.props.changeLoadingStatus(true);
 
       try {
-        const data = await imagesAPI(currentSearchQuery, prevPage);
+        const data = await imagesAPI(currentSearchQuery, currentPage);
         if (data.hits.length === 0) {
-          toast.error(`Sorry, there are no images matching your search query`)
+          toast.error(`Sorry, there are no images matching your search query`);
+          return;
         }
-        this.setState({ imagesList: data});
+        if (currentPage === 1) {
+          toast.success(`Hooray! We found ${data.totalHits} images.`);
+        }
+
         this.props.getImageList(data.hits);
         this.props.getTotalHits(data.totalHits);
-        // toast.success(`Hooray! We found ${data.totalHits} images.`);
       } catch (error) {
-        this.setState({ error})
-        return toast.error(`Something went wrong. ${this.state.error}. Please, try again later`);;
+        this.setState({ error });
+        return toast.error(
+          `Something went wrong. ${this.state.error}. Please, try again later`
+        );
       } finally {
         this.props.changeLoadingStatus(false);
+      }
     }
   }
-}
 
   render() {
-    const { imagesList} = this.state;
-    // if (status === 'idle') {
-    //     return toast.warn(`Please, enter something to start searching`);
-    // }
-    // if (status === 'pending') {
-    //   return <div>Loading...</div>;
-    // }
-    // if (status === 'no-results') {
-    //   return toast.warn(`Sorry, there are no images matching your search query`);
-    // }
-    // if (status === 'rejected') {
-    //   return toast.error(`Something went wrong. ${status.error}. Please, try again later`);
-    // }
-    // if (status === 'resolved') {
-      return (<div>{imagesList && <Gallery>{this.props.children}</Gallery>}</div>);
-    // }
+    const { imageList } = this.props;
+    return <div>{imageList && <Gallery>{this.props.children}</Gallery>}</div>;
   }
 }
 
-// ImageGallery.propTypes = {
-
-// };
-
-
-//       // if (totalHits === 0) {
-//         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');} 
-//       else if (numberOfPics >= totalHits && totalHits !=0) {
-//         Notiflix.Notify.failure ("We're sorry, but you've reached the end of search results");
-//       }  
-//       // else {
-//       //   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-//       // }
-  
-//       }
+ImageGallery.propTypes = {
+  changeLoadingStatus: PropTypes.func.isRequired,
+  getImageList: PropTypes.func.isRequired,
+  getTotalHits: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
+  imageList: PropTypes.array,
+};
