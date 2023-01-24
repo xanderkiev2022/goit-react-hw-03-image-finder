@@ -1,19 +1,25 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { GalleryItem, Img  } from './ImageGallryItem.styled'; 
 
 export class ImageGalleryItem extends Component {
-
+    hadleClick = () => {
+        this.props.getLargeImage(this.props.largeImgUrl);
+        this.props.toggleModal();
+    }
 
   render() {
-    const { image } = this.props;
+    const { imageUrl } = this.props;
     return (
-      <li onClick={_}>
-        <img src={image} alt="" />
-      </li>
+      <GalleryItem onClick={this.hadleClick}>
+        <Img src={imageUrl} alt="" />
+      </GalleryItem>
     );
   }
 }
 
-// ImageGalleryItem.propTypes = {
-
-// };
+ImageGalleryItem.propTypes = {
+    toggleModal: PropTypes.func.isRequired,
+    getLargeImage: PropTypes.func.isRequired,
+    largeImgUrl: PropTypes.string.isRequired,
+};

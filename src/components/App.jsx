@@ -1,94 +1,93 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
+import { ToastContainer } from 'react-toastify';
+import { Searchbar } from './Searchbar/Searchbar';
+import { ImageGallery } from './ImageGallery/ImageGallery';
+import { ImageGalleryItem } from './ImageGalleryItem/ImageGalleryItem';
+import { Modal } from './Modal/Modal';
+import { ButtonLoadMore } from './Button/Button';
+import { Loader } from './Loader/Loader';
+import { Container } from './App.styled';
 
 // const LS_KEY = 'savedPictures';
 
 
 export class App extends Component {
     state = {
-      page: 1,
       searchQuery: '',
-      items: [],
+      page: 1,      
       showModal: false,
+      imageList: null,
       largeImage: null,
       totalhits: 0,
+      isLoading: false,
       };
 
-      // componentDidMount() {
-  //   const localData = localStorage.getItem(LS_KEY);
-  //   if (localData) {
-  //     this.setState({ contacts: JSON.parse(localData) });
-  //   }
-  //   else this.setState({ contacts: [] }); //перезатираємо localStorage
-  // }
+      handleSubmit = searchQuery => {
+        this.setState({ searchQuery, page: 1, imagesList: null });
+      };
 
-  // componentDidUpdate(_, prevState) {
-  //   if (prevState.contacts !== this.state.contacts) {
-  //     localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
-  //   }
-  // }
+      loadMore = () => {
+        this.setState(({page}) => ({ page: page + 1 }));
+      };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    e.targer.reset();
+      changeLoadingStatus = value => {
+        this.setState({ isLoading: value });
+      };
 
-    // this.setState(prevState => ({
-    //   contacts: [stateOfContactForm, ...prevState.contacts],
-    // }));
-  };
+      toggleModal = () => {
+        this.setState(({ showModal }) => ({ showModal: !showModal }));
+      };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
-  };
+      getLargeImage = largeImage => {
+        this.setState({ largeImage });};
+    
+      getTotalHits = totalhits => {
+        this.setState({ totalhits });};
+
+      getImageList = data => {
+        if (!this.state.imageList) {
+          this.setState({ imageList: data });
+          return;
+        }
+        if (this.state.imageList) {
+          this.setState(({imageList})=> ({
+            imageList: [...imageList, ...data],
+          }));
+          return;
+        }
+      };
 
   render() {
-    const { filter, contacts } = this.state;
+    const { searchQuery, page, showModal, imageList, largeImage, totalhits, isLoading } = this.state;
     return (
-      <>
-        <Searchbar />
-        <ImageGallery searchQuery={this.state.searchQuery} page={this.stae.page}  />
-        <ImageGalleryItem /> 
-        <Loader /> 
-        <Button />
-        <Modal />
-      </>
+      <Container>
+        <Searchbar onSubmit={this.handleSubmit}/>
+        <ImageGallery searchQuery={searchQuery} page={page} getImageList={this.getImageList} getTotalHits={this.getTotalHits} changeLoadingStatus={this.changeLoadingStatus}>
+        {imageList?.map(image => (
+            <ImageGalleryItem
+              key={image.id}
+              imageUrl={image.webformatURL}
+              largeImgUrl={image.largeImageURL}
+              toggleModal={this.toggleModal}
+              getLargeImage={this.getLargeImage}              
+            ></ImageGalleryItem>
+          ))}
+          </ImageGallery>
+          {isLoading && <Loader />}
+        {/* <ToastContainer autoClose={3000} /> */}
+        {/* {showModal && (
+          <Modal largeImage={largeImage} toggleModal={this.toggleModal} />
+        )} */}
+         {/* {imageList && totalhits > 12 && (
+          <ButtonLoadMore loadMore={this.loadMore} />
+        )} */}
+        
+      </Container>
     );
   }
 }
 
 
-
-
-
-
-// let loading = false;
-// let numberOfPics = 0;
-
-// searchForm.addEventListener('submit', onSearch);
-// window.addEventListener('scroll', infinitiScroll);
-
-// function onSearch(e) {
-//   e.preventDefault();
-//   picApiService.query = e.target.elements.searchQuery.value;
-
-
-
-//   // picApiService.resetPage();
-//   clearPicsContainer();
-//   fetchPics();
-// }
-
-// async function fetchPics() {
-//   // console.log (fetchPics)
-//   loading = true;
-//   try {
-//     const pictures = await picApiService.fetchPictures();
-//     const {data: { hits, totalHits }} = pictures;
-//       // console.log(!document.documentElement.getBoundingClientRect().bottom <= document.documentElement.clientHeight)
-//       numberOfPics += hits.length;
-      
-//       appendPicsMarkup(hits);
 //       if (!totalHits) {
 //       // if (totalHits === 0) {
 //         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');} 
@@ -110,32 +109,6 @@ export class App extends Component {
 //       // }
   
 //       }
-//   catch (error) {console.log(error.message);}
-//   finally  {
-//     searchForm.reset();
-//     loading = false;
-//   }
-// }
-
-// // function infinitiScrollEnd(e) {
-// // console.log (e.target)
-// // Notiflix.Notify.failure ("We're sorry, but you've reached the end of search results");
+//   
+//  ("We're sorry, but you've reached the end of search results");
 // // }
-
-// function appendPicsMarkup(hits) {
-//   gallery.insertAdjacentHTML('beforeend', createPicsMarkup(hits));
-// }
-
-// function clearPicsContainer() {
-//   gallery.innerHTML = '';
-// }
-
-// function infinitiScroll() {
-//   if (!loading) {
-//     const documentRect = document.documentElement.getBoundingClientRect();
-//     if (documentRect.bottom < document.documentElement.clientHeight + 250) {
-//       picApiService.incrementPage();
-//     }
-//     fetchPics();
-// }
-// }
