@@ -43,6 +43,12 @@ export class ImageGallery extends Component {
 
   render() {
     const { imageList } = this.props;
+
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
+
     return <div>{imageList && <Gallery>{this.props.children}</Gallery>}</div>;
   }
 }
