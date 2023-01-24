@@ -74,13 +74,22 @@ export class App extends Component {
           ))}
           </ImageGallery>
           {isLoading && <Loader />}
-        {/* <ToastContainer autoClose={3000} /> */}
-        {/* {showModal && (
+        {/* <ToastContainer position="top-right"
+autoClose={3000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light" /> */}
+        {showModal && (
           <Modal largeImage={largeImage} toggleModal={this.toggleModal} />
-        )} */}
-         {/* {imageList && totalhits > 12 && (
+        )}
+         {imageList && totalhits > 12 && (
           <ButtonLoadMore loadMore={this.loadMore} />
-        )} */}
+        )}
         
       </Container>
     );
@@ -88,27 +97,4 @@ export class App extends Component {
 }
 
 
-//       if (!totalHits) {
-//       // if (totalHits === 0) {
-//         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again');} 
-//       else if (numberOfPics >= totalHits && totalHits !=0) {
-//         Notiflix.Notify.failure ("We're sorry, but you've reached the end of search results");
-//      // else if (error.response.status === 400) {
-//       // 
-//       // !totalHits && !document.documentElement.getBoundingClientRect().bottom <= document.documentElement.clientHeight
-//       // document.documentElement.scrollHeight === window.pageYOffset + window.innerHeight
-//       // 
-//           // if (picApiService.page >= Math.ceil(totalHits / picApiService.per_page)
-//           // hits.length < picApiService.per_page
-//           //  {  
-//             window.removeEventListener('scroll', infinitiScroll);
-//         // window.addEventListener("scroll", infinitiScrollEnd)
-//       }  
-//       // else {
-//       //   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-//       // }
-  
-//       }
-//   
-//  ("We're sorry, but you've reached the end of search results");
-// // }
+

@@ -18,8 +18,13 @@ export class Searchbar extends Component {
     e.preventDefault();
     const { searchQuery } = this.state;
     if (searchQuery.trim() === '') {
-        // alert('Please start typing the searching query');
-        toast.warn('Please start typing the searching query');
+        alert('Please start typing the searching query');
+
+
+        // toast('test');
+
+        
+        // toast.warn('Please start typing the searching query');
         return;}
     this.props.onSubmit(searchQuery);
     this.reset();
