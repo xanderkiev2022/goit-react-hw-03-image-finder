@@ -23,4 +23,6 @@ ImageGalleryItem.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   getLargeImage: PropTypes.func.isRequired,
   largeImgUrl: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
 };

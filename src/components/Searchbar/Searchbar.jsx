@@ -15,9 +15,9 @@ export class Searchbar extends Component {
   };
 
   handleChange = e => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     const normalizeValue = value.toLowerCase();
-    this.setState({ [name]: normalizeValue });
+    this.setState({ searchQuery: normalizeValue });
   };
 
   handleSubmit = e => {

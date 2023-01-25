@@ -13,14 +13,14 @@ export class App extends Component {
     searchQuery: '',
     page: 1,
     showModal: false,
-    imageList: null,
+    imageList: [],
     largeImage: null,
     totalhits: 0,
     isLoading: false,
   };
 
   handleSubmit = searchQuery => {
-    this.setState({ searchQuery, page: 1, imageList: null });
+    this.setState({ searchQuery, page: 1, imageList: [] });
   };
 
   loadMore = () => {

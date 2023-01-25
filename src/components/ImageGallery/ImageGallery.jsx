@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { imagesAPI } from 'components/Services/imagesAPI';
+import { imagesAPI } from 'Services/imagesAPI';
 import { Gallery } from './imageGallery.styled';
 
 export class ImageGallery extends Component {
@@ -60,4 +60,5 @@ ImageGallery.propTypes = {
   searchQuery: PropTypes.string.isRequired,
   page: PropTypes.number.isRequired,
   imageList: PropTypes.array,
+  children: PropTypes.array.isRequired,
 };
